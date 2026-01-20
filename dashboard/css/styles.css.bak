@@ -1,0 +1,1381 @@
+:root{
+  --bg:#071224;
+  --panel:#0c1b33;
+  --panel2:#0a162b;
+  --text:#eaf2ff;
+  --muted:#a8b6d6;
+  --border:rgba(255,255,255,.08);
+  --accent:#4aa3ff;
+  --accent-rgb:74,163,255;
+  --danger:#ff5b6e;
+  --ok:#36d399;
+  --warn:#fbbf24;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:18px;
+  --bgRad1:#0c2a52;
+  --bgRad3:#050c18;
+  /* Theme font is configurable (Settings → Theme). */
+  --font: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:var(--font);background:radial-gradient(1200px 900px at 20% 10%, var(--bgRad1) 0%, var(--bg) 55%, var(--bgRad3) 100%);color:var(--text)}
+a{color:inherit}
+.btn{appearance:none;border:1px solid var(--border);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{border-color:rgba(255,255,255,.18)}
+.btn.primary{background:linear-gradient(180deg, rgba(var(--accent-rgb,74,163,255),.45), rgba(var(--accent-rgb,74,163,255),.18));border-color:rgba(var(--accent-rgb,74,163,255),.55)}
+.btn.danger{background:linear-gradient(180deg, rgba(255,91,110,.45), rgba(255,91,110,.16));border-color:rgba(255,91,110,.55)}
+.btn.ghost{box-shadow:none;background:transparent}
+.btn.tiny{padding:6px 8px;border-radius:10px;box-shadow:none;font-size:12px;line-height:1}
+.input,.select,.textarea,select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(18,24,38,.92);
+  color:var(--text);
+  outline:none;
+}
+
+/* Date/Time picker icon visibility (Chrome/Edge/Safari)
+   NOTE: Some Windows/Edge builds render the calendar icon very dark.
+   We force high-contrast so the icon is always visible on our dark UI. */
+input[type="date"], .input[type="date"],
+input[type="time"], .input[type="time"]{color-scheme:dark}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator{
+  filter: invert(1) brightness(1.75);
+  opacity: 1;
+  cursor: pointer;
+}
+
+
+select option,.select option{
+  color:#111;
+  background:#fff;
+}
+
+/* Ensure select text stays readable in Edge/Windows high-contrast quirks */
+select:disabled{opacity:.65;color:var(--text)}
+.textarea{min-height:110px;resize:vertical}
+.input:focus,.select:focus,.textarea:focus{border-color:rgba(var(--accent-rgb,74,163,255),.6)}
+.small{font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.03)}
+
+/* Login */
+.auth-wrap{min-height:100%;display:grid;place-items:center;padding:24px}
+.auth-card{width:min(980px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+@media(max-width:900px){.auth-card{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card.pad{padding:20px}
+.h1{font-size:28px;margin:0 0 8px}
+.h2{font-size:16px;margin:0 0 10px;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center}
+
+/* Topbar actions (settings + logout) */
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.iconbtn{padding:10px 10px;min-width:44px;display:grid;place-items:center}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,91,110,.5);background:rgba(255,91,110,.12);color:#ffd7dc}
+
+/* App layout */
+.app{height:100%;display:grid;grid-template-columns:260px 1fr 320px;grid-template-rows:auto 1fr;gap:14px;padding:14px;padding-bottom:92px}
+@media(max-width:1100px){.app{grid-template-columns:240px 1fr;grid-template-rows:auto auto 1fr;}.right{grid-column:1/-1;grid-row:2}.main{grid-column:1/-1;grid-row:3}}
+.topbar{grid-column:1/-1;display:grid;grid-template-columns:260px 1fr auto;align-items:center;gap:12px}
+.topbar-center{display:flex;justify-content:center;align-items:center;min-width:0}
+.topbrand{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+@media(max-width:1100px){.topbar{grid-template-columns:1fr auto}.topbrand{display:none}.topbar-center{justify-content:flex-start}}
+
+/* === Logo polish (MUMS) === */
+.brand-name{
+  /* subtle glow so the logo feels "alive" without being distracting */
+  text-shadow:
+    0 0 10px rgba(110,231,255,.35),
+    0 0 18px rgba(167,139,250,.22);
+}
+.brand-mark{
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.30),
+    0 0 18px rgba(110,231,255,.22),
+    0 0 26px rgba(167,139,250,.18),
+    inset 0 0 0 1px rgba(255,255,255,.20);
+}
+.brand-build{
+  /* requested: smaller build number (<50%) */
+  font-size:6px;
+  opacity:.65;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-top:2px;
+}
+.announce-bar{width:100%;max-width:none;display:flex;flex-direction:row;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;min-height:52px;min-width:0}
+.announce-bar:hover{border-color:rgba(255,255,255,.16)}
+.announce-msg{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.announce-title{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+.announce-meta{display:none}
+
+.side,.right,.main{min-height:0}
+.side.card.pad{display:flex;flex-direction:column;gap:12px}
+/* Sidebar user container: keep it transparent so the profile card itself is the single background layer */
+.usercard{padding:0;border-radius:0;border:none;background:transparent;position:relative}
+
+/* Bottom quick links bar */
+.quicklinks-bar{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  /* Keep bottom bar above all in-page cards so clocks never get clipped behind panels.
+     Modals/popovers use higher z-index values. */
+  z-index:2000;
+  padding:10px 14px;
+  background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.28) 40%, rgba(0,0,0,.45));
+  backdrop-filter: blur(10px);
+}
+.quicklinks-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:center;align-items:flex-end;
+  /* Bring circles closer together (~30% tighter than previous gap) */
+  gap:4px;
+  flex-wrap:nowrap}
+.qitem{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;min-width:0}
+.qlabel{font-size:11px;line-height:1.1;color:var(--muted);max-width:72px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Tooltip for quick link circles */
+.qitem[data-tip]:hover::after,.qitem[data-tip]:focus-within::after{content:attr(data-tip);position:absolute;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.82);color:#fff;font-size:11px;padding:6px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);white-space:nowrap;pointer-events:none;z-index:100}
+.qitem[data-tip]:hover::before,.qitem[data-tip]:focus-within::before{content:"";position:absolute;bottom:50px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(0,0,0,.82);pointer-events:none;z-index:100}
+
+@media(max-width:1100px){.quicklinks-inner{flex-wrap:wrap;row-gap:10px}.quicklinks-bar{padding-bottom:14px}}
+.qcircle{height:44px;width:44px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.04);display:grid;place-items:center;cursor:pointer;user-select:none;box-shadow:var(--shadow);position:relative}
+.qcircle:hover{border-color:rgba(255,255,255,.18)}
+.qcircle .qtxt{font-size:12px;color:var(--muted);font-weight:700}
+.qcircle.filled{background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));}
+.qcircle.filled .qtxt{color:var(--text)}
+.qcircle:focus{outline:2px solid rgba(74,163,255,.55);outline-offset:2px}
+
+/* Keep app content from being covered by the bottom bar.
+   Increased to account for: quick links labels + circles + world clocks. */
+.app{padding-bottom:120px}
+
+/* Theme picker */
+.theme-grid{display:grid;grid-template-columns:repeat(5, 1fr);gap:12px}
+@media(max-width:900px){.theme-grid{grid-template-columns:repeat(2,1fr)}}
+.theme-tile{border:1px solid var(--border);border-radius:16px;padding:12px;background:rgba(255,255,255,.03);cursor:pointer;display:flex;flex-direction:column;gap:10px}
+.theme-tile:hover{border-color:rgba(255,255,255,.18)}
+.theme-swatch{height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(90deg, var(--sw1), var(--sw2))}
+.theme-tile .tname{font-weight:800}
+.theme-tile .tmeta{font-size:12px;color:var(--muted)}
+.theme-tile.active{border-color:rgba(var(--accent-rgb,74,163,255),.60);box-shadow:0 0 0 2px rgba(74,163,255,.18)}
+
+/* Quick links settings */
+.links-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.links-grid{grid-template-columns:1fr}}
+.link-row{border:1px solid var(--border);border-radius:16px;padding:12px;background:rgba(255,255,255,.03)}
+.link-row .lr-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.link-row .lr-slot{font-weight:900}
+.link-row .lr-actions{display:flex;gap:8px;align-items:center}
+
+
+.link-actions{display:flex;gap:8px}
+.usercard .uc-head{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.usercard .uc-left{display:flex;gap:12px;align-items:center;min-width:0}
+.usercard .uc-name{
+  font-weight:900;
+  /* Make long names readable without breaking layout */
+  font-size: clamp(14px, 1.6vw, 18px);
+  line-height: 1.15;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.usercard .uc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.10);font-size:12px;color:var(--muted);font-weight:700}
+.avatar{width:44px;height:44px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);display:grid;place-items:center;flex:0 0 auto}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar .initials{font-weight:900;color:rgba(255,255,255,.9)}
+.avatar-lg{width:56px;height:56px;border-radius:18px}
+.uc-name-lg{font-size:clamp(16px, 1.7vw, 20px)}
+
+/* Profile layout: Full-width banner */
+.uc-banner{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:6px 0}
+.uc-banner-left{flex:0 0 auto}
+.uc-banner-mid{flex:1 1 auto}
+.uc-banner-right{flex:0 0 auto}
+.uc-banner-stats{margin-top:10px;display:flex;justify-content:space-between;gap:10px;align-items:flex-end}
+
+/* Photo-left profile (MUMS theme) */
+.up-badge{display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+.up-photo-col{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px}
+.up-role{font-size:12px;font-weight:900;letter-spacing:.08em;padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);text-transform:uppercase}
+.up-info{flex:1 1 auto;min-width:0;padding-top:2px}
+.up-name{font-weight:900;line-height:1.05;
+  font-size:clamp(18px, 2.3vw, 24px);
+  word-break:break-word;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.up-sub{margin-top:6px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+.up-duty{margin-top:10px;font-size:13px;font-weight:800}
+.up-duty .muted{font-weight:700;margin-right:6px}
+.up-actions{flex:0 0 auto;padding-top:2px}
+
+/* Sidebar profile (single-layer, centered) */
+.sp-wrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  gap:6px; padding:10px 6px 6px 6px; text-align:center;
+  background:transparent; border:none; box-shadow:none}
+.sp-photo{width:74px;height:74px;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center}
+.sp-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sp-photo .initials{font-weight:900;color:rgba(255,255,255,.92)}
+.sp-duty{margin-top:2px;font-size:13px;font-weight:900;color:rgba(255,255,255,.92);line-height:1.2;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sp-duty .muted{color:rgba(255,255,255,.70);margin-right:6px;letter-spacing:.06em}
+.sp-name{margin-top:2px;font-weight:950;line-height:1.1;
+  font-size:clamp(15px, 2.2vw, 20px);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  word-break:break-word}
+.sp-shift{margin-top:2px;font-size:12px;font-weight:900;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+.sp-position{margin-top:4px;font-size:12px;font-weight:950;letter-spacing:.10em;text-transform:uppercase;
+  padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.sp-team{margin-top:2px;font-size:11px;font-weight:900;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+
+/* Edit icon pinned to upper-right of the left sidebar */
+.sidebar-edit{position:absolute;top:8px;right:8px;z-index:3}
+
+/* small icon button used in header/profile controls */
+.icon-btn{width:34px;height:34px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;display:grid;place-items:center;
+  box-shadow:0 10px 26px rgba(0,0,0,.22)}
+.icon-btn:hover{background:rgba(255,255,255,.09)}
+.icon-btn:active{transform:translateY(1px)}
+
+/* Inline profile edit icon removed (edit is inside Settings). */
+.sidebar-edit{display:none !important;}
+
+/* Sidebar profile (centered, single-layer, no background overlays) */
+.sp-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  gap:6px;
+  padding:10px 8px 6px 8px;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+}
+
+.sp-photo{width:78px;height:78px;border-radius:18px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+}
+.sp-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sp-photo .initials{font-weight:900;color:rgba(255,255,255,.92)}
+
+.sp-duty{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.88)}
+.sp-duty .muted{color:rgba(255,255,255,.72);font-weight:900;margin-right:6px}
+
+.sp-name{font-weight:950;line-height:1.08;
+  font-size:clamp(16px, 2.2vw, 22px);
+  max-width: 100%;
+  word-break:break-word;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+.sp-shift{font-size:12px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+
+.sp-position{margin-top:2px;font-size:12px;font-weight:900;letter-spacing:.09em;
+  padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  text-transform:uppercase;
+}
+
+.sp-team{font-size:11px;font-weight:900;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,.68)}
+
+/* Edit icon pinned to the upper-right of the sidebar */
+.sidebar-edit{
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:5;
+}
+
+/* Inline profile edit icon removed (edit is inside Settings). */
+.sidebar-edit{display:none !important;}
+
+.sp-duty{
+  margin-top:4px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.04em;
+  color:rgba(255,255,255,.92);
+}
+.sp-duty .muted{color:rgba(255,255,255,.70);margin-right:6px}
+.sp-dutyvalue{font-weight:900}
+
+.sp-name{
+  font-weight:950;
+  line-height:1.05;
+  font-size:clamp(16px, 2.2vw, 22px);
+  max-width:100%;
+}
+
+.sp-shift{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.82);
+}
+
+.sp-photo{
+  width:78px;
+  height:78px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:4px;
+}
+.sp-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sp-photo .initials{font-weight:950;color:rgba(255,255,255,.92)}
+
+.sp-position{
+  margin-top:6px;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.10em;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  text-transform:uppercase;
+}
+
+.sp-team{
+  margin-top:2px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.70);
+}
+
+.avatar.avatar-xl{width:74px;height:74px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center}
+.avatar.avatar-xl img{width:100%;height:100%;object-fit:cover;display:block}
+.uc-sched{margin-top:4px;font-weight:900}
+.avatar-xl{width:110px;height:110px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);display:grid;place-items:center;margin:0 auto}
+.avatar-xl img{width:100%;height:100%;object-fit:cover;display:block}
+.usercard .line .small{margin:0}
+.usercard .name{font-weight:800}
+.usercard .value{color:var(--text)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-login{justify-content:flex-start}
+.brand-mark{width:42px;height:42px;border-radius:14px;position:relative;flex:0 0 auto;
+  background:linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.90));
+  box-shadow:0 10px 30px rgba(0,0,0,.30), inset 0 0 0 1px rgba(255,255,255,.20);
+}
+.brand-mark::after{content:"M";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-weight:900;letter-spacing:.02em;color:rgba(0,0,0,.70);font-size:18px;
+  text-shadow:0 1px 0 rgba(255,255,255,.35);
+}
+.brand-text{line-height:1.1}
+.brand-name{font-weight:900;letter-spacing:.06em;
+  /* Glowing effect (requested) */
+  text-shadow:
+    0 0 10px rgba(110,231,255,.35),
+    0 0 22px rgba(167,139,250,.22);
+}
+.brand-sub{font-size:12px;color:var(--muted);font-weight:700}
+.brand-build{
+  /* Build number less prominent (requested) */
+  font-size:7px; /* ~50% smaller */
+  opacity:.75;
+  margin-top:2px;
+}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav a{display:flex;gap:10px;align-items:center;text-decoration:none;padding:10px 12px;border-radius:12px;border:1px solid transparent;color:var(--muted)}
+.nav a.active{color:var(--text);border-color:var(--border);background:rgba(255,255,255,.03)}
+.nav a:hover{border-color:rgba(255,255,255,.12)}
+
+/* Tree nav */
+.nav-group{border:1px solid transparent;border-radius:14px;overflow:hidden}
+.nav-group.active{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.02)}
+.nav-group-head{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:transparent;border:0;color:var(--muted);cursor:pointer}
+.nav-group-head:hover{background:rgba(255,255,255,.03)}
+.nav-group-head .chev{margin-left:auto;opacity:.7}
+.nav-group-kids{padding:4px 0 10px}
+
+/* Profile modal */
+.profile-grid{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start}
+@media(max-width:800px){.profile-grid{grid-template-columns:1fr}}
+.profile-photo{text-align:center}
+.profile-fields{display:grid;gap:12px}
+
+/* Master schedule table */
+.ms-table{display:flex;flex-direction:column;gap:10px}
+.ms-head{display:grid;grid-template-columns: 1.3fr 1.2fr .9fr .5fr;gap:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(255,255,255,.02);font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.ms-row{display:grid;grid-template-columns: 1.3fr 1.2fr .9fr .5fr;gap:10px;align-items:start;padding:12px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(0,0,0,.10)}
+.ms-name{display:flex;flex-direction:column;gap:2px}
+
+/* Master schedule (v2) */
+.ms-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.ms-actions{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.ms-actions label{min-width:220px}
+.ms-list{display:flex;flex-direction:column;gap:10px}
+.ms-item{display:grid;grid-template-columns: 1.1fr 1.5fr .9fr auto;gap:12px;align-items:center;padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.03)}
+@media(max-width:980px){.ms-item{grid-template-columns:1fr;align-items:start}.ms-save{justify-content:flex-start}}
+.ms-id{display:flex;gap:10px;align-items:center;min-width:240px}
+.ms-avatar{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;font-weight:900;border:1px solid rgba(255,255,255,.14);background:rgba(var(--accent-rgb,74,163,255),.12)}
+.ms-title{font-weight:900}
+.weekday-chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02);color:var(--muted);padding:6px 8px;border-radius:12px;cursor:pointer;font-size:12px;line-height:1}
+.chipbtn:hover{border-color:rgba(255,255,255,.22)}
+.chipbtn.on{color:var(--text);border-color:rgba(74,163,255,.55);background:rgba(var(--accent-rgb,74,163,255),.12)}
+.ms-save{display:flex;justify-content:flex-end}
+.main.card.pad{overflow:auto}
+.right.card.pad{display:flex;flex-direction:column;gap:12px;overflow:auto}
+.section-title{margin:0;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.table th{font-size:12px;color:var(--muted);text-align:left;padding:0 8px}
+.table td{background:rgba(255,255,255,.03);border:1px solid var(--border);padding:10px 8px}
+.table tr td:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
+.table tr td:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
+
+/* Modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);z-index:10000}
+.modal.open{display:flex}
+.modal .panel{width:min(820px,100%);max-height:min(86vh,900px);overflow:auto;background:linear-gradient(180deg, rgba(12,27,51,.98), rgba(10,22,43,.98));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.modal .panel .head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px;border-bottom:1px solid var(--border)}
+.modal .panel .body{padding:16px}
+
+/* Dictionary */
+.dict-top{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media(max-width:900px){.dict-top{grid-template-columns:1fr}}
+.dict-meta{margin-top:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(255,255,255,.03)}
+.dict-content{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.dict-card{padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(0,0,0,.12)}
+.dict-card h3{margin:0 0 8px;font-size:14px;letter-spacing:.01em}
+.dict-card .small{line-height:1.6}
+.dict-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:900px){.dict-grid{grid-template-columns:1fr}}
+.dict-illus{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);padding:10px}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tab{padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer}
+.tab.active{color:var(--text);border-color:rgba(74,163,255,.45);background:rgba(var(--accent-rgb,74,163,255),.12)}
+
+/* Rich text editor */
+.rte{border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.02)}
+.rte-toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border-bottom:1px solid var(--border)}
+.rte-toolbar .btn{box-shadow:none;padding:8px 10px}
+.rte-editor{min-height:160px;padding:12px;outline:none}
+
+/* Members scheduling timeline */
+.members-wrap{display:flex;flex-direction:column;gap:12px}
+.members-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.members-table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.members-row{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:12px;display:grid;grid-template-columns:260px 1fr 86px;gap:12px;align-items:center}
+.members-row.inactive{opacity:.75}
+.status-pill{display:inline-flex;align-items:center;padding:2px 8px;margin-left:8px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-weight:800;font-size:11px;color:var(--text)}
+.members-meta .m-name{font-weight:800;font-size:15px}
+.members-meta .m-sub{color:var(--muted);font-size:12px;margin-top:2px}
+.timeline{position:relative;height:34px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.02);overflow:hidden}
+.timeline-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.9);background:linear-gradient(90deg, rgba(0,0,0,.50), rgba(0,0,0,.35));backdrop-filter:blur(2px);}
+.timeline .tick{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed rgba(255,255,255,.45)}
+.timeline .seg{position:absolute;top:4px;bottom:4px;border-radius:10px;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0b1220;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.timeline .seg{cursor:grab;user-select:none}
+.timeline .seg.selected{outline:2px solid rgba(74,163,255,.95);box-shadow:0 0 0 4px rgba(74,163,255,.15);}
+.select-rect{position:absolute;top:0;height:100%;border:1px dashed rgba(74,163,255,.95);background:rgba(var(--accent-rgb,74,163,255),.12);border-radius:10px;pointer-events:none;}
+.timeline .seg.ghost{opacity:.85}
+.timeline .seg.bad{outline:2px solid rgba(255,91,110,.95);box-shadow:0 0 0 4px rgba(255,91,110,.15);}
+.timeline .seg.ok{outline:2px dashed rgba(54,211,153,.75)}
+
+.sched-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0 6px}
+.sched-toolbar .left{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sched-toolbar .right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Member scheduling floating actions */
+.sched-swap{position:relative}
+.sched-float-actions{position:absolute;top:12px;right:12px;display:flex;align-items:center;justify-content:flex-end;gap:10px;z-index:5}
+.sched-float-actions .iconrow{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+.sched-float-actions .iconrow .iconbtn{width:32px;height:32px;border-radius:12px}
+.sched-float-actions .iconrow .iconbtn.flat{background:transparent;border:1px solid transparent}
+.sched-float-actions .iconrow .iconbtn.flat:hover{border-color:var(--border);background:rgba(255,255,255,.02)}
+.sched-float-actions #sendSchedule{box-shadow:0 10px 24px rgba(0,0,0,.25)}
+
+/* Paint mode (hour grid) */
+.paintbar{display:flex;align-items:center;gap:8px}
+.paintbar-inner{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,0.02)}
+.paintbar-inner.on{border-color:rgba(125,211,252,0.55);box-shadow:0 0 0 3px rgba(125,211,252,0.12)}
+.btn.ghost.active{border-color:rgba(125,211,252,0.55);box-shadow:0 0 0 3px rgba(125,211,252,0.12)}
+.grid.paint-enabled .timeline{cursor:crosshair}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+
+/* Week selector helpers */
+.weekctl{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer}
+.iconbtn:hover{filter:brightness(1.08)}
+.week-warn{max-width:520px;text-align:right;padding:8px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:700}
+.week-warn.locked{border-color:rgba(255,210,77,.35);background:rgba(255,210,77,.10)}
+.week-warn.past{border-color:rgba(255,91,110,.35);background:rgba(255,91,110,.10)}
+.week-warn.future{border-color:rgba(74,163,255,.35);background:rgba(74,163,255,.10)}
+
+/* Swap animation when changing week/day */
+.sched-swap{transition:opacity .18s ease, transform .18s ease}
+.sched-swap.swap-anim{opacity:.55;transform:translateY(4px)}
+
+/* Popover */
+.popover{position:fixed;z-index:9999;min-width:280px;max-width:380px;border:1px solid var(--border);border-radius:14px;background:rgba(12,27,51,.96);box-shadow:var(--shadow);padding:12px 12px 10px 12px;backdrop-filter:blur(6px)}
+.popover .pop-title{font-weight:900;margin-bottom:6px}
+
+/* Audit + trend */
+.audit-row{display:flex;justify-content:space-between;gap:14px;padding:10px 12px;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(255,255,255,.02);margin-bottom:8px}
+.audit-left{min-width:0}
+.audit-right{white-space:nowrap}
+.trend-card{border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.02);padding:12px}
+.trend-svg{width:100%;height:auto;display:block;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(0,0,0,.14);padding:10px;margin-bottom:12px;color:rgba(255,255,255,.92)}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px,1fr));gap:10px}
+.trend-item{border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:10px 12px;background:rgba(255,255,255,.02)}
+
+.role-picker{position:fixed;z-index:9999;min-width:240px;border:1px solid var(--border);border-radius:14px;background:rgba(12,27,51,.96);box-shadow:var(--shadow);padding:10px;}
+.role-picker .row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.role-picker .quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.role-picker .quick button{font-size:12px;padding:6px 8px;border-radius:10px}
+.timeline .seg.dragging{cursor:grabbing;opacity:.9;outline:2px solid rgba(255,255,255,.35)}
+.timeline .seg .handle{position:absolute;top:0;bottom:0;width:8px;background:rgba(0,0,0,.12)}
+.timeline .seg .handle.l{left:0;cursor:ew-resize}
+.timeline .seg .handle.r{right:0;cursor:ew-resize}
+.timeline .seg[data-role="lunch"] .handle{display:none} /* fixed 1hr lunch */
+
+.timeline-ruler{display:grid;grid-template-columns:260px 1fr 86px;gap:12px;align-items:end;height:22px;margin-bottom:8px}
+.timeline-ruler .ruler-track{position:relative;height:22px}
+.timeline-ruler .ruler-tick{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed rgba(255,255,255,.45)}
+.timeline-ruler .mark{position:absolute;top:0;transform:translateX(-50%);font-size:11px;color:var(--muted);white-space:nowrap}
+.timeline-ruler .mark.first{transform:none;left:0}
+.timeline-ruler .mark.last{transform:translateX(-100%)}
+
+/* Sidebar activity logs */
+.side-logs{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.side-logs-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.side-logs-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:hidden}
+.logline{display:flex;gap:8px;align-items:baseline;font-size:12px;color:var(--muted);line-height:1.2}
+.logline .t{color:var(--muted);min-width:48px}
+.logline .m{color:var(--text);opacity:.9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.logs{display:flex;flex-direction:column;gap:8px}
+.logcard{padding:10px 12px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03);display:flex;gap:10px;align-items:flex-start}
+.logcard .meta{min-width:170px}
+.logcard .meta .when{font-size:12px;color:var(--muted)}
+.logcard .meta .who{font-weight:800}
+.logcard .detail{flex:1}
+.logcard .detail .msg{font-weight:700}
+.logcard .detail .small{color:var(--muted)}
+.logs{overflow-x:hidden}
+.logcard{max-width:100%}
+.logcard .detail{min-width:0;overflow:hidden}
+.logcard .detail .msg{overflow-wrap:anywhere;word-break:break-word;white-space:pre-wrap}
+.logcard.is-error{border-color:rgba(255,91,110,.55);background:rgba(255,91,110,.06)}
+.logcard.is-error .detail .msg{color:rgba(255,91,110,.95)}
+.logcard.is-error .meta .when{color:rgba(255,91,110,.85)}
+.logcard.is-error .meta .who{color:rgba(255,255,255,.95)}
+
+/* Team-colored text (matches theme) */
+.team-morning .m{color:#6fb7ff}
+.team-mid .m{color:#ffb86b}
+.team-night .m{color:#c6a4ff}
+.seg[data-role="mailbox_manager"]{background:#4aa3ff}
+.seg[data-role="back_office"]{background:#ff9f1c} /* Orange */
+.seg[data-role="call_onqueue"]{background:#2ecc71} /* Green (Call Available) */
+.seg[data-role="call_available"]{background:#2ecc71} /* Green (alias) */
+.seg[data-role="lunch"]{background:#22d3ee} /* Cyan */
+.seg[data-role="mailbox_call"]{background:#00c853} /* Solid Green */
+.seg[data-role="block"]{background:#ff6b6b}
+.time-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:6px}
+.attach{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.attach-list{display:flex;flex-direction:column;gap:6px}
+.attach-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03)}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:10px;margin:8px 0}
+.iconpill{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+.icon{font-size:14px}
+
+/* Mailbox duty header */
+.duty{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-bottom:14px}
+.duty .box{padding:12px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.03)}
+.duty .mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:180px}
+.timer{font-size:18px;font-weight:800}
+
+/* Chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:4px 8px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.tab{padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;color:var(--muted)}
+.tab.active{color:var(--text);border-color:rgba(74,163,255,.55);background:rgba(var(--accent-rgb,74,163,255),.12)}
+
+/* Rich editor */
+.editor{border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03);overflow:hidden}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--border)}
+.tool{padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font-size:12px}
+.tool select,.tool input{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:6px 8px;
+  background:rgba(18,24,38,.92);
+  color:var(--text);
+}
+.tool select option{color:#111;background:#fff}
+.editable{min-height:160px;padding:12px;outline:none}
+.attachments{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.attach-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.03)}
+
+/* Timeline advanced interactions */
+.timeline .seg.ghost{pointer-events:none;opacity:.55;filter:saturate(.85);border-style:dashed}
+.timeline .seg.ghost.ok{outline:2px solid rgba(127,211,140,.75)}
+.timeline .seg.ghost.bad{outline:2px solid rgba(255,107,107,.9)}
+.timeline .seg.conflict{outline:2px solid rgba(255,107,107,.95);animation:conflictPulse .35s ease-in-out 0s 2}
+@keyframes conflictPulse{0%{transform:translateX(0)}25%{transform:translateX(-2px)}50%{transform:translateX(2px)}75%{transform:translateX(-1px)}100%{transform:translateX(0)}}
+
+/* Day tabs indicator */
+.daytabs{display:flex;gap:8px;flex-wrap:wrap}
+.daytab{position:relative}
+.daytab.hasdata::after{content:"";position:absolute;top:6px;right:8px;width:6px;height:6px;border-radius:999px;background:rgba(74,163,255,.95);box-shadow:0 0 0 3px rgba(74,163,255,.16)}
+
+.daytab .dot{display:inline-block;width:6px;height:6px;border-radius:999px;background:rgba(74,163,255,.95);margin-left:6px;vertical-align:middle;box-shadow:0 0 0 3px rgba(74,163,255,.12)}
+.daytab .lock{display:inline-block;margin-left:6px;font-size:11px;opacity:.85;vertical-align:middle}
+.lock-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:rgba(255,255,255,.9);font-size:12px;font-weight:800}
+
+/* Coverage meter */
+.coverage-meter{display:flex;gap:6px;flex-wrap:wrap}
+.coverage-panel{border:1px solid var(--border);border-radius:14px;padding:12px;background:transparent}
+.coverage-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.coverage-left{min-width:240px}
+.coverage-day-center{flex:1;display:flex;justify-content:center;align-items:center;font-weight:800;letter-spacing:.2px;font-size:14px;line-height:1;padding:8px 10px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.03);margin-bottom:2px;text-align:center}
+.coverage-title{font-size:13px;font-weight:900;letter-spacing:.2px}
+.coverage-sub{font-size:11px;color:var(--muted);font-weight:700;max-width:720px}
+.coverage-kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{
+  /* KPI chips (OK HOURS / HEALTH): remove overlay background + reduce size (~70%) */
+  min-width:63px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  padding:6px 7px;
+  background:transparent;
+}
+.kpi-label{font-size:10px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.8px}
+.kpi-val{font-size:14px;font-weight:950;margin-top:2px}
+.coverage-scroll{overflow-x:auto;padding-bottom:6px;margin-top:10px}
+.coverage-scroll .coverage-meter{flex-wrap:nowrap}
+.coverage-scroll .cm-col{min-width:86px}
+
+.toolgroup{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cm-col{min-width:84px;flex:1;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.03);padding:8px}
+.cm-col.ok{border-color:rgba(54,211,153,.28);background:rgba(54,211,153,.06)}
+.cm-col.bad{border-color:rgba(255,107,107,.28);background:rgba(255,107,107,.06)}
+.cm-label{font-size:11px;color:var(--muted);font-weight:800;margin-bottom:6px}
+.cm-bars{display:flex;gap:6px;flex-wrap:wrap}
+.cm-bar{font-size:11px;font-weight:900;padding:6px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04)}
+.cm-bar[data-kind="mailbox"]{color:#9ed3ff}
+.cm-bar[data-kind="call"]{color:#ffe0a3}
+
+/* Assign Tasks legend (timeline) */
+.timeline-legend{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:10px}
+.legend-item{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);font-size:12px;color:var(--text);font-weight:800}
+.legend-dot{width:10px;height:10px;border-radius:999px;display:inline-block;box-shadow:0 0 0 4px rgba(255,255,255,.06)}
+
+/* Match block colors */
+.legend-dot.role-mailbox_manager{background:#4aa3ff}
+.legend-dot.role-call_onqueue{background:#36d399} /* Call Available = Green */
+.legend-dot.role-back_office{background:#ff9800} /* Back Office = Orange */
+.legend-dot.role-lunch{background:#00e5ff}      /* Lunch = Cyan */
+.legend-dot.role-mailbox_call{background:#00c853}/* Mailbox + Call = Solid Green */
+.legend-dot.role-block{background:#ff6b6b}
+
+/* Settings hub */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.settings-card{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:16px;padding:14px}
+.settings-card-title{font-weight:900;letter-spacing:.2px}
+@media (max-width:860px){.settings-grid{grid-template-columns:1fr}}
+
+/* Right sidebar tabs */
+.rtabs{display:flex;gap:8px;margin-bottom:12px;padding:6px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.02)}
+.rtab{flex:1;border:0;background:transparent;color:var(--muted);padding:8px 10px;border-radius:12px;font-weight:900;letter-spacing:.2px;cursor:pointer}
+.rtab:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.rtab.active{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.rtab-panels{position:relative;min-height:220px}
+.rtab-panel{display:none;animation:rtabIn .18s ease-out}
+.rtab-panel.active{display:block}
+@keyframes rtabIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Right sidebar dynamic Guide (Summary tab) */
+.rsummary-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.rsummary-body{display:flex;flex-direction:column;gap:10px}
+.rguide-card{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:16px;padding:12px}
+.rguide-card details{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 12px;background:rgba(0,0,0,.08)}
+.rguide-card details+details{margin-top:10px}
+.rguide-card summary{cursor:pointer;list-style:none;font-weight:900;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.rguide-card summary::-webkit-details-marker{display:none}
+.rguide-card .sicon{color:var(--muted);font-size:12px}
+.rguide-card .gbody{margin-top:10px;color:var(--text);line-height:1.55}
+.rguide-card .gbody ul{margin:8px 0 0 18px}
+.rguide-card .gbody li{margin:6px 0}
+.rlegend{width:100%;border-collapse:collapse;margin-top:8px}
+.rlegend th,.rlegend td{border:1px solid rgba(255,255,255,.08);padding:6px 8px;font-size:12px}
+.rlegend th{color:var(--muted);text-align:left}
+.rqa{margin-top:8px}
+.rqa .q{font-weight:900;margin-top:10px}
+.rqa .a{margin-top:4px;color:var(--text)}
+
+/* Guide (Summary) tools + professional layout */
+.gtools{display:flex;align-items:center;gap:10px;margin:8px 0 10px}
+.gswitch{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.02);cursor:pointer;user-select:none}
+.gswitch input{accent-color:var(--accent);transform:translateY(1px)}
+.gswitch span{font-weight:900;color:var(--text);font-size:12px}
+.gsearch{flex:1;display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.02)}
+.gsearch-ico{opacity:.85}
+.gsearch input{flex:1;background:transparent;border:0;outline:none;color:var(--text);font-weight:700}
+
+.gtabs{
+  display:flex;
+  gap:8px;
+  margin:6px 0 10px;
+  padding:6px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:rgba(255,255,255,.02);
+  /* Prevent any horizontal scrollbar inside the right sidebar */
+  flex-wrap:nowrap;
+  overflow:hidden;
+}
+.gtab{
+  flex:1;
+  min-width:0;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:8px 8px;
+  border-radius:12px;
+  font-weight:900;
+  letter-spacing:.2px;
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.gtab:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.gtab.active{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+
+.gask{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.gask input{flex:1;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;padding:10px 12px;color:var(--text);font-weight:700;outline:none}
+.gask input:focus{border-color:rgba(255,255,255,.22)}
+
+.gpanel{border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:18px;overflow:hidden}
+.gpanel-head{padding:12px 12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.gpanel-title{font-weight:1000;letter-spacing:.2px}
+.gpanel-body{padding:12px}
+.gpanel-foot{padding:10px 12px;border-top:1px solid rgba(255,255,255,.08)}
+.gpanel-disabled{padding:18px}
+.gpanel-disabled-title{font-weight:1000;margin-bottom:6px}
+
+.gqa{display:flex;flex-direction:column;gap:10px}
+.gqa-item{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.12);border-radius:16px;padding:10px 12px}
+.gqa-q{font-weight:1000}
+.gqa-a{margin-top:6px;color:var(--text);line-height:1.55}
+
+.gnotes{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.gleg{width:100%;border-collapse:collapse}
+.gleg th,.gleg td{border:1px solid rgba(255,255,255,.08);padding:7px 8px;font-size:12px}
+.gleg th{color:var(--muted);text-align:left}
+
+.gmanual{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:900px){.gmanual{grid-template-columns:1fr}}
+.gthumb{border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.10);border-radius:16px;padding:10px;text-align:left;cursor:pointer}
+.gthumb:hover{background:rgba(255,255,255,.04)}
+.gthumb-img{border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:rgba(0,0,0,.18)}
+.gthumb-cap{margin-top:8px;font-weight:900;font-size:12px;color:var(--text)}
+.gimg-wrap{display:flex;align-items:center;justify-content:center}
+.gimg-wrap svg{width:100%;height:auto;max-height:520px}
+
+.gqs{margin-top:10px}
+.gqs-item{margin-top:4px}
+
+
+/* === Fix: Right sidebar should not be scrollable (fit content) === */
+.right.card.pad{overflow:hidden}
+.right .tabs{font-size:11px}
+.right .rtabs{gap:6px}
+.right .rtab{padding:8px 10px;font-size:12px}
+.right .guideClassic, .right .guide-tabs, .right .guide-wrap, .right .guide-body{font-size:11.5px;line-height:1.22}
+.right .guide-wrap{gap:6px}
+.right .guide-body{max-height:none;overflow:visible}
+.right input.input, .right select.input{font-size:11.5px;padding:7px 9px}
+.right .btn{font-size:11.5px}
+.right .gpanel-head{padding:10px 10px 8px}
+.right .gpanel-body{padding:10px}
+.right .gpanel-foot{padding:8px 10px}
+.right .gask input{padding:9px 10px}
+.right .gtools{margin:6px 0 8px}
+.right .gtools .btn{padding:7px 9px}
+.right .section-title{font-size:12px}
+.right .small{font-size:11px}
+
+/* === Member multi-select checkbox (clickable + visible) === */
+.m-selwrap{display:inline-flex;align-items:center;justify-content:center;margin-right:10px;padding:3px;border-radius:8px;position:relative;z-index:5}
+.m-selwrap:hover{background:rgba(255,255,255,.06)}
+.m-selwrap .m-select{width:16px;height:16px;cursor:pointer;pointer-events:auto}
+.members-row .members-meta{display:flex;flex-direction:column;gap:4px}
+.members-row.m-selected{outline:2px solid rgba(74,163,255,.55);box-shadow:0 0 0 4px rgba(74,163,255,.12)}
+
+
+/* Members Assign Tasks: locked indicator below the timeline (prevents overlap with REST DAY overlay) */
+.timeline-wrap{display:flex;flex-direction:column;gap:6px}
+.locked-below{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:900;letter-spacing:.14em;color:rgba(255,255,255,.78)}
+.locked-below .lk-ic{font-size:14px;line-height:1}
+body[data-mode="light"] .locked-below{color:rgba(15,23,42,.68)}
+
+
+/* === World clocks in bottom bar === */
+.quicklinks-bar{display:flex;align-items:flex-end;justify-content:flex-start;gap:14px}
+.clocks-wrap{flex:0 0 auto;display:flex;gap:10px;align-items:flex-end;justify-content:flex-start;min-width:0}
+.quicklinks-inner{flex:1 1 auto;min-width:0}
+
+/* Clock card base */
+.wclock{min-width:128px;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:8px 10px;background:rgba(0,0,0,.14);backdrop-filter:blur(10px)}
+.wclock .wc-label{font-size:11px;font-weight:900;letter-spacing:.08em;color:rgba(255,255,255,.80);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.wclock .wc-time{display:flex;align-items:baseline;gap:6px;margin-top:4px;font-variant-numeric: tabular-nums}
+.wclock .wc-h{font-size:20px;font-weight:950}
+.wclock .wc-m{font-size:18px;font-weight:950;opacity:.96}
+.wclock .wc-sec{font-size:12px;font-weight:900;opacity:.75}
+.wclock .wc-sep{opacity:.85}
+
+/* 10 clock design presets (using .wc-<id>) */
+.wclock.wc-classic{background:rgba(0,0,0,.14)}
+.wclock.wc-round{border-radius:999px}
+.wclock.wc-glass{background:rgba(255,255,255,.06)}
+.wclock.wc-dashed{border-style:dashed}
+.wclock.wc-shadow{box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.wclock.wc-gradient{background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.10))}
+.wclock.wc-bold{border-width:2px}
+.wclock.wc-saturated{filter:saturate(1.1)}
+.wclock.wc-dark{background:rgba(0,0,0,.18)}
+.wclock.wc-accent{background:rgba(255,255,255,.04);border-color:rgba(74,163,255,.25)}
+
+/* Clock style ids used by Settings (10 designs) */
+.wclock.wc-neon{
+  background:rgba(0,0,0,.28);
+  border-color:rgba(54,211,153,.35);
+  box-shadow:
+    0 0 0 1px rgba(54,211,153,.12) inset,
+    0 0 22px rgba(54,211,153,.14),
+    0 14px 40px rgba(0,0,0,.35);
+}
+.wclock.wc-neon .wc-time{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+.wclock.wc-neon .wc-h,.wclock.wc-neon .wc-m{ text-shadow: 0 0 10px currentColor, 0 0 24px rgba(54,211,153,.15); }
+.wclock.wc-neon .wc-sec{ text-shadow: 0 0 10px rgba(255,255,255,.18); }
+.wclock.wc-mono{background:rgba(0,0,0,.14);filter:grayscale(1)}
+.wclock.wc-minimal{background:transparent;box-shadow:none;border-color:rgba(255,255,255,.10);padding:6px 8px}
+.wclock.wc-terminal{
+  background:rgba(0,0,0,.38);
+  border-color:rgba(54,211,153,.22);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  box-shadow: 0 0 0 1px rgba(54,211,153,.10) inset;
+}
+.wclock.wc-terminal .wc-label{color:rgba(54,211,153,.72)}
+.wclock.wc-terminal .wc-h,.wclock.wc-terminal .wc-m{ text-shadow: 0 0 10px currentColor; }
+.wclock.wc-chip{background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(0,0,0,.12));border-color:rgba(255,255,255,.16);border-radius:12px}
+.wclock.wc-rounded{border-radius:999px;padding:8px 14px}
+.wclock.wc-outline{background:transparent;box-shadow:none;border-color:rgba(255,255,255,.18)}
+
+
+/* clocks modal */
+.clocks-grid{display:grid;grid-template-columns:repeat(3, minmax(240px,1fr));gap:14px}
+@media(max-width:900px){.clocks-grid{grid-template-columns:1fr}}
+.clock-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;background:rgba(255,255,255,.04)}
+.clocks-preview-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:14px}
+.clocks-preview-strip{display:flex;gap:10px;align-items:stretch;margin-top:8px}
+.cprev{flex:1;min-width:0;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;background:rgba(0,0,0,.10);cursor:grab;user-select:none;display:flex;flex-direction:column;gap:6px}
+.cprev:active{cursor:grabbing}
+.cprev.disabled{opacity:.55}
+.cprev.dragging{opacity:.55}
+.cprev.over{outline:2px solid rgba(74,163,255,.55);box-shadow:0 0 0 4px rgba(74,163,255,.12)}
+.cprev-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cprev-label{font-size:11px;font-weight:950;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+.cprev-badge{font-size:10px;font-weight:900;color:var(--muted)}
+.cprev-time{display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums}
+.cprev-h{font-size:18px;font-weight:950}
+.cprev-sep{opacity:.85}
+.cprev-m{font-size:16px;font-weight:950;opacity:.96}
+.cprev-note{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clock-card .row{gap:10px}
+.clock-card .title{font-weight:900;margin-bottom:6px}
+
+
+/* === MUMS FIX7: Logo glow + build label + clocks preview + logs error styling === */
+.brand-build{font-size:6px;opacity:.65;font-weight:800;letter-spacing:.10em;text-transform:uppercase;margin-top:2px}
+.brand-name{
+  text-shadow:0 0 12px rgba(74,163,255,.40), 0 0 22px rgba(74,163,255,.20);
+}
+@keyframes mumsGlow{0%,100%{filter:drop-shadow(0 0 10px rgba(74,163,255,.25))}50%{filter:drop-shadow(0 0 18px rgba(74,163,255,.38))}}
+.brand-mark{animation:mumsGlow 4.5s ease-in-out infinite}
+
+/* Right sidebar sizing (no internal scroll) */
+#summaryNowChip{display:none !important}
+.gtabs{gap:6px;padding:5px}
+.gtab{font-size:11px;padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gpanel-title{font-size:12px}
+.gpanel-body{padding:10px}
+.gqa-q{font-size:12px}
+.gqa-a{font-size:11.5px}
+
+/* Clocks settings preview strip */
+.clocks-preview{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);border-radius:18px;padding:12px;margin-bottom:12px}
+.clocks-preview-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+.clocks-preview-strip{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.wclock.wc-preview{min-width:0;flex:1;max-width:280px;cursor:grab;position:relative;user-select:none}
+.wclock.wc-preview.dragging{opacity:.75;cursor:grabbing}
+.wclock.wc-preview.dragover{outline:2px dashed rgba(74,163,255,.55);outline-offset:4px}
+.wclock.wc-preview .wc-drag{position:absolute;top:6px;right:8px;font-size:12px;opacity:.75}
+.wclock.wc-preview.off{opacity:.55;filter:grayscale(.30)}
+
+/* Activity logs page: prevent horizontal scroll + highlight errors */
+.logs{overflow-x:hidden}
+.logcard{overflow:hidden}
+.logcard .detail{overflow-wrap:anywhere;word-break:break-word}
+
+/* Error highlighting in Activity Logs */
+.logcard.is-error{
+  border-color: rgba(255,107,107,.38);
+  background: rgba(255,107,107,.06);
+}
+.logcard.is-error .meta{
+  color: rgba(255,170,170,.92);
+}
+.logcard.is-error .detail{
+  color: rgba(255,215,215,.95);
+}
+
+/* === Release Notes (editor + markdown preview) === */
+.rn-toolbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.rn-editor-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:start}
+@media(max-width:900px){.rn-editor-grid{grid-template-columns:1fr}}
+.rn-preview{min-height:140px;max-height:320px;overflow:auto}
+.rn-md{font-size:13px;line-height:1.55;color:var(--text)}
+.rn-md strong{font-weight:900}
+.rn-md em{opacity:.95}
+.rn-code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  padding:2px 6px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10)}
+.rn-pre{margin:10px 0;padding:10px 12px;border-radius:14px;overflow:auto;
+  background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10)}
+.rn-pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px}
+.rn-h1{font-size:16px;font-weight:950;margin:10px 0 6px}
+.rn-h2{font-size:14px;font-weight:950;margin:10px 0 6px}
+.rn-h3{font-size:13px;font-weight:950;margin:10px 0 6px;opacity:.95}
+.rn-ul,.rn-ol{margin:8px 0 8px 18px}
+.rn-ul li,.rn-ol li{margin:4px 0}
+
+/* light mode tweaks */
+body[data-mode="light"] .rn-code{background:rgba(15,23,42,.04);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .rn-pre{background:rgba(15,23,42,.04);border-color:rgba(15,23,42,.12)}
+
+/* === Aurora Light: fix sidebar profile visibility (Shift/Avatar/Initials) === */
+body[data-mode="light"] .sp-wrap{color:var(--text)}
+body[data-mode="light"] .sp-duty{color:var(--text)}
+body[data-mode="light"] .sp-duty .muted{color:var(--muted)}
+body[data-mode="light"] .sp-name{color:var(--text)}
+body[data-mode="light"] .sp-shift{color:var(--muted)}
+body[data-mode="light"] .sp-photo{border-color:rgba(15,23,42,.12);background:rgba(255,255,255,.85)}
+body[data-mode="light"] .sp-photo .initials{color:rgba(15,23,42,.92)}
+body[data-mode="light"] .sp-position{background:rgba(var(--accent-rgb,74,163,255),.10);border-color:rgba(var(--accent-rgb,74,163,255),.22);color:rgba(15,23,42,.86)}
+
+/* Profile modal (top-right badge) visibility in light themes */
+body[data-mode="light"] .up-role{background:rgba(15,23,42,.04);border-color:rgba(15,23,42,.12);color:rgba(15,23,42,.78)}
+body[data-mode="light"] .up-sub{color:var(--muted)}
+
+/* === Aurora Light: clocks settings readability === */
+body[data-mode="light"] .clock-card{background:rgba(255,255,255,.82);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .clocks-preview{background:rgba(255,255,255,.72);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .wclock.wc-preview{border-color:rgba(15,23,42,.12)}
+
+/* === Aurora Light: Guide / Dictionary / Manual readability === */
+body[data-mode="light"] .gpanel-body, body[data-mode="light"] .dict-content{color:var(--text)}
+body[data-mode="light"] .gpanel-body .muted, body[data-mode="light"] .dict-content .muted{color:var(--muted)}
+.logcard.is-error .small{
+  color: rgba(255,190,190,.82);
+}
+
+/* Prevent any horizontal scroll on log lines */
+.logcard .meta,
+.logcard .detail{min-width:0}
+
+.logcard.error{
+  border-color:rgba(255,107,107,.38);
+  background:rgba(255,107,107,.05);
+}
+.logcard.error .meta{color:rgba(255,200,200,.92)}
+.logcard.error .detail{color:rgba(255,230,230,.95)}
+.logcard.error .small{color:rgba(255,170,170,.90)}
+
+/* Logs: hard prevent horizontal scroll from long strings */
+#logsList, .logs{min-width:0}
+.logcard .meta{min-width:170px;flex:0 0 170px}
+.logcard .detail{min-width:0}
+.logcard .msg, .logcard .small{overflow-wrap:anywhere;word-break:break-word}
+.logcard .detail .msg{overflow-wrap:anywhere}
+.logcard.is-error{border-color:rgba(255,90,90,.40);background:rgba(255,90,90,.06)}
+.logcard.is-error .msg,.logcard.is-error .who{color:#ff6b6b}
+.logcard.is-error .small{color:rgba(255,140,140,.90)}
+
+
+/* === MUMS FIX7.1: Right sidebar tabs fit + logs wrap improvements === */
+.gtabs{display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:6px;padding:5px}
+.gtab{min-width:0}
+
+.logcard{flex-wrap:wrap;min-width:0}
+.logcard .meta{flex:0 0 auto}
+.logcard .detail{flex:1 1 320px;min-width:0}
+
+/* Error toggle button state */
+.btn.active{border-color:rgba(255,90,90,.45);background:rgba(255,90,90,.10)}
+
+/* Right sidebar: prevent horizontal overflow */
+.right .gtools{flex-wrap:wrap}
+.right .gsearch{min-width:0}
+.right .gask{flex-wrap:wrap}
+.right .gask input{min-width:0}
+.right .rtabs{overflow:hidden}
+
+
+/* Right sidebar hard lock (no scrollbars) */
+.right.card.pad{overflow:hidden !important;overflow-x:hidden !important;overflow-y:hidden !important}
+.right.card.pad .rtab-panels,.right.card.pad .rtab-panel,.right.card.pad .rsummary-body{overflow:hidden}
+.right.card.pad .gtools,.right.card.pad .gtabs,.right.card.pad .gask{max-width:100%}
+.right.card.pad *{box-sizing:border-box}
+
+/* === Clock style ids used by Settings (10 designs) ===
+   Align CSS with CLOCK_STYLES in app.js: classic, neon, mono, glass, bold, minimal, terminal, chip, rounded, outline.
+   (We keep legacy classes above for backward compatibility.)
+*/
+.wclock.wc-neon{
+  background:rgba(0,0,0,.18);
+  border-color:rgba(54,211,153,.35);
+  box-shadow:0 0 0 1px rgba(54,211,153,.16), 0 0 18px rgba(54,211,153,.14);
+}
+.wclock.wc-mono{background:rgba(0,0,0,.14);filter:grayscale(1)}
+.wclock.wc-minimal{background:transparent;box-shadow:none;border-color:rgba(255,255,255,.10);padding:6px 8px}
+.wclock.wc-terminal{
+  background:rgba(0,0,0,.32);
+  border-color:rgba(54,211,153,.20);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+.wclock.wc-chip{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.14));border-color:rgba(255,255,255,.16);border-radius:12px}
+.wclock.wc-rounded{border-radius:999px;padding:8px 14px}
+.wclock.wc-outline{background:transparent;box-shadow:none;border-color:rgba(255,255,255,.18)}
+
+/* Small polish: keep clock label readable in rounded styles */
+.wclock.wc-rounded .wc-label{max-width:140px}
+
+/* Align world clocks with the main content column (so they don't sit under the left sidebar) */
+.clocks-wrap{margin-left:calc(260px + 14px)}
+@media(max-width:1100px){.clocks-wrap{margin-left:0}}
+
+/* =====================================================================
+   Build 20260119-aurora-fix13
+   Aurora Light polish + announcement formatting + quick link glow
+   + improved Members Assign Tasks layout (weekly workload pills)
+   ===================================================================== */
+
+/* Announcement: show user + time (meta) and keep a clean horizontal bar */
+.announce-meta{display:inline !important;white-space:nowrap;margin-left:8px;opacity:.95}
+
+/* Quick links: slightly tighter spacing + glow when configured */
+.quicklinks-inner{gap:3px}
+.qcircle.filled.glowing{
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.10),
+    0 0 18px var(--glow, rgba(74,163,255,.35));
+}
+
+/* Generic flat icon button (used outside the send-icon row as well) */
+.iconbtn.flat{background:transparent;border-color:transparent}
+.iconbtn.flat:hover{border-color:var(--border);background:rgba(255,255,255,.02)}
+
+/* Coverage meter edit icon */
+.coverage-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.coverage-title-row .iconbtn{width:30px;height:30px;border-radius:12px}
+
+/* Members: more readable name + weekly workload pills */
+.members-row{grid-template-columns:300px 1fr 120px}
+.members-meta .m-name{display:flex;align-items:center;gap:10px}
+.members-meta .m-name-text{font-weight:900;font-size:15px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.members-meta .m-stats{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.statpill{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);font-size:11px;font-weight:800;color:var(--text)}
+.statpill b{font-weight:950}
+.statpill[data-kind="mailbox"]{border-color:rgba(74,163,255,.28);background:rgba(74,163,255,.08)}
+.statpill[data-kind="back"]{border-color:rgba(255,183,77,.28);background:rgba(255,183,77,.08)}
+.statpill[data-kind="call"]{border-color:rgba(54,211,153,.28);background:rgba(54,211,153,.08)}
+.statpill[data-kind="case"]{border-color:rgba(167,139,250,.26);background:rgba(167,139,250,.08)}
+
+/* Aurora Light mode: ensure ALL controls + icons remain visible/readable */
+body[data-mode="light"]{color-scheme:light}
+body[data-mode="light"] .card{background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.88))}
+body[data-mode="light"] .btn{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .btn:hover{filter:brightness(.98)}
+body[data-mode="light"] .btn.ghost{background:rgba(255,255,255,.72)}
+body[data-mode="light"] .btn.ghost:hover{background:rgba(255,255,255,.82)}
+body[data-mode="light"] .btn.primary{color:#fff}
+body[data-mode="light"] .input{background:rgba(255,255,255,.90);border-color:rgba(15,23,42,.12);color:var(--text)}
+body[data-mode="light"] .badge{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .timeline{background:rgba(255,255,255,.70)}
+body[data-mode="light"] .timeline .tick{border-left:2px dashed rgba(15,23,42,.18)}
+body[data-mode="light"] .timeline-overlay{background:linear-gradient(90deg, rgba(255,255,255,.75), rgba(255,255,255,.60));color:rgba(15,23,42,.86)}
+body[data-mode="light"] .tab{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .week-warn{background:rgba(15,23,42,.03);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .popover{background:rgba(255,255,255,.96);color:var(--text)}
+body[data-mode="light"] .popover .small{color:var(--muted)}
+
+/* In dark mode we invert the native calendar icon; in light mode keep it natural */
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1) brightness(1.75) contrast(1.15);opacity:.9}
+body[data-mode="light"] input[type="date"]::-webkit-calendar-picker-indicator{filter:none;opacity:.75}
+
+/* Light mode quick link glow border */
+body[data-mode="light"] .qcircle.filled.glowing{
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,.10),
+    0 0 16px var(--glow, rgba(59,130,246,.25));
+}
+
+body[data-mode="light"] .statpill{border-color:rgba(15,23,42,.12);background:rgba(15,23,42,.04)}
+
+/* Aurora Light: navigation + modals + non-card grids */
+body[data-mode="light"] .nav a.active{background:rgba(15,23,42,.03)}
+body[data-mode="light"] .nav a:hover{border-color:rgba(15,23,42,.14)}
+body[data-mode="light"] .nav-group.active{border-color:rgba(15,23,42,.12);background:rgba(15,23,42,.02)}
+body[data-mode="light"] .nav-group-head:hover{background:rgba(15,23,42,.03)}
+
+body[data-mode="light"] .announce-bar{background:rgba(15,23,42,.02)}
+body[data-mode="light"] .announce-bar:hover{border-color:rgba(15,23,42,.18)}
+
+body[data-mode="light"] .quicklinks-bar{background:linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.55) 40%, rgba(255,255,255,.75))}
+body[data-mode="light"] .wclock{background:rgba(255,255,255,.72);border-color:rgba(15,23,42,.12)}
+body[data-mode="light"] .wclock .wc-label{color:rgba(15,23,42,.70)}
+body[data-mode="light"] .wclock .wc-h, body[data-mode="light"] .wclock .wc-m{color:rgba(15,23,42,.92)}
+body[data-mode="light"] .wclock .wc-sec{color:rgba(15,23,42,.62)}
+
+
+body[data-mode="light"] .modal{background:rgba(15,23,42,.40)}
+body[data-mode="light"] .modal .panel{background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94))}
+
+body[data-mode="light"] .ms-head{border-color:rgba(15,23,42,.12);background:rgba(255,255,255,.70);color:rgba(15,23,42,.68)}
+body[data-mode="light"] .ms-row{border-color:rgba(15,23,42,.12);background:rgba(15,23,42,.03)}
+body[data-mode="light"] .ms-item{border-color:rgba(15,23,42,.12);background:rgba(255,255,255,.72)}
+body[data-mode="light"] .ms-avatar{border-color:rgba(15,23,42,.12);background:rgba(var(--accent-rgb,74,163,255),.12)}
+
+body[data-mode="light"] .members-row{background:rgba(255,255,255,.72)}
+body[data-mode="light"] .qcircle{background:rgba(15,23,42,.04)}
+body[data-mode="light"] .avatar, body[data-mode="light"] .avatar-xl{border-color:rgba(15,23,42,.12);background:rgba(15,23,42,.04)}
+
+body[data-mode="light"] .input,
+body[data-mode="light"] .select,
+body[data-mode="light"] .textarea,
+body[data-mode="light"] select{background:rgba(255,255,255,.92);border-color:rgba(15,23,42,.12);color:var(--text)}
+
+
+/* =====================================================================
+   Build 20260120-aurora-fix16
+   Design tokens + responsive typography + automatic readability support
+   ===================================================================== */
+
+:root{
+  /* Semantic surfaces (fallback to existing theme vars) */
+  --surface-0: var(--bg);
+  --surface-1: var(--panel);
+  --surface-2: var(--panel2);
+
+  /* Semantic text */
+  --text-0: var(--text);
+  --text-muted: var(--muted);
+
+  /* Semantic borders */
+  --border-0: var(--border);
+  --border-1: color-mix(in srgb, var(--border-0) 70%, transparent);
+
+  /* Controls + overlays */
+  --control-bg: rgba(18,24,38,.92);
+  --control-border: var(--border-0);
+  --control-text: var(--text-0);
+  --overlay-scrim: rgba(0,0,0,.55);
+
+  /* Button glass (dark default) */
+  --btn-glass-top: rgba(255,255,255,.08);
+  --btn-glass-bot: rgba(255,255,255,.02);
+
+  /* Typography scale (responsive, stable across layouts) */
+  --fs-xs: clamp(11px, 0.25vw + 10px, 12px);
+  --fs-sm: clamp(12px, 0.30vw + 11px, 13px);
+  --fs-base: clamp(13px, 0.35vw + 11px, 14px);
+  --fs-lg: clamp(14px, 0.55vw + 12px, 16px);
+  --fs-xl: clamp(18px, 0.95vw + 14px, 22px);
+  --fs-2xl: clamp(22px, 1.45vw + 16px, 28px);
+
+  --lh-tight: 1.15;
+  --lh-base: 1.45;
+}
+
+body{font-size:var(--fs-base);line-height:var(--lh-base);color:var(--text-0)}
+.small{font-size:var(--fs-xs);color:var(--text-muted)}
+.h1{font-size:var(--fs-2xl);line-height:var(--lh-tight)}
+.h2{font-size:var(--fs-lg)}
+
+/* Unify component styling on semantic tokens (prevents theme regressions) */
+.card{background:linear-gradient(180deg, color-mix(in srgb, var(--surface-1) 92%, transparent), color-mix(in srgb, var(--surface-1) 86%, transparent));border-color:var(--border-0)}
+
+.btn{
+  border-color:var(--border-0);
+  color:var(--text-0);
+  background:linear-gradient(180deg, var(--btn-glass-top), var(--btn-glass-bot));
+}
+.btn:hover{border-color:color-mix(in srgb, var(--border-0) 70%, var(--text-0))}
+.btn.primary{color:var(--accent-contrast, #fff)}
+
+.input,.select,.textarea,select{
+  background:var(--control-bg);
+  border-color:var(--control-border);
+  color:var(--control-text);
+}
+
+.modal{background:var(--overlay-scrim)}
+.modal .panel{background:linear-gradient(180deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--surface-1) 94%, transparent))}
+
+/* Native date/time pickers: use correct scheme per mode */
+body[data-mode="dark"] input[type="date"], body[data-mode="dark"] .input[type="date"],
+body[data-mode="dark"] input[type="time"], body[data-mode="dark"] .input[type="time"]{color-scheme:dark}
+body[data-mode="light"] input[type="date"], body[data-mode="light"] .input[type="date"],
+body[data-mode="light"] input[type="time"], body[data-mode="light"] .input[type="time"]{color-scheme:light}
+
+/* Light mode token overrides (Aurora Light and any future light themes) */
+body[data-mode="light"]{
+  --overlay-scrim: rgba(15,23,42,.40);
+  --control-bg: rgba(255,255,255,.92);
+  --control-border: rgba(15,23,42,.12);
+  --btn-glass-top: rgba(15,23,42,.04);
+  --btn-glass-bot: rgba(15,23,42,.02);
+}
+
+/* Theme Audit panel */
+.theme-audit{margin-top:14px}
+.theme-audit .audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:900px){.theme-audit .audit-grid{grid-template-columns:1fr}}
+.audit-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;border:1px solid var(--border-0);background:rgba(255,255,255,.03)}
+body[data-mode="light"] .audit-row{background:rgba(15,23,42,.03)}
+.audit-pill{font-size:11px;font-weight:950;padding:4px 8px;border-radius:999px;border:1px solid var(--border-0);background:rgba(255,255,255,.04)}
+body[data-mode="light"] .audit-pill{background:rgba(255,255,255,.85)}
+.audit-pill.pass{border-color:rgba(54,211,153,.35)}
+.audit-pill.warn{border-color:rgba(251,191,36,.40)}
+.audit-pill.fail{border-color:rgba(255,91,110,.40)}
+
+
+/* =====================================================================
+   Build 20260120-aurora-fix16
+   Design tokens + responsive typography + automatic readability support
+   ===================================================================== */
+
+:root{
+  /* Semantic surfaces (fallback to existing theme vars) */
+  --surface-0: var(--bg);
+  --surface-1: var(--panel);
+  --surface-2: var(--panel2);
+
+  /* Semantic text */
+  --text-0: var(--text);
+  --text-muted: var(--muted);
+
+  /* Semantic borders */
+  --border-0: var(--border);
+  --border-1: rgba(255,255,255,.18);
+
+  /* Controls */
+  --control-bg: rgba(18,24,38,.92);
+  --control-border: var(--border-0);
+  --control-text: var(--text-0);
+
+  /* Overlays */
+  --overlay-scrim: rgba(0,0,0,.55);
+
+  /* Button glass tokens */
+  --btn-glass-top: rgba(255,255,255,.08);
+  --btn-glass-bot: rgba(255,255,255,.02);
+
+  /* Responsive typography tokens */
+  --fs-xs: clamp(11px, 0.25vw + 10px, 12px);
+  --fs-sm: clamp(12px, 0.30vw + 11px, 13px);
+  --fs-base: clamp(13px, 0.35vw + 11px, 14px);
+  --fs-lg: clamp(14px, 0.45vw + 12px, 16px);
+  --fs-xl: clamp(18px, 0.90vw + 14px, 22px);
+  --fs-2xl: clamp(22px, 1.40vw + 16px, 28px);
+
+  --lh-tight: 1.1;
+  --lh-base: 1.4;
+}
+
+/* Use typography tokens throughout to keep layout stable across themes/fonts */
+body{font-size:var(--fs-base);line-height:var(--lh-base);color:var(--text-0)}
+.h1{font-size:var(--fs-2xl);line-height:var(--lh-tight)}
+.h2{font-size:var(--fs-lg);line-height:var(--lh-tight)}
+.small{font-size:var(--fs-xs)}
+
+/* Controls + buttons should always come from semantic tokens */
+.btn{
+  border-color:var(--border-0);
+  background:linear-gradient(180deg, var(--btn-glass-top), var(--btn-glass-bot));
+  color:var(--text-0);
+}
+.btn:hover{border-color:var(--border-1)}
+.btn.primary{color:var(--accent-contrast, #fff)}
+
+.input,.select,.textarea,select{
+  background:var(--control-bg);
+  border-color:var(--control-border);
+  color:var(--control-text);
+}
+
+/* Modal scrim token (prevents “overlapping overlay background” issues across themes) */
+.modal{background:var(--overlay-scrim)}
+
+/* Date/time inputs: honor theme mode instead of forcing dark icons globally */
+body[data-mode="dark"] input[type="date"],
+body[data-mode="dark"] input[type="time"],
+body[data-mode="dark"] .input[type="date"],
+body[data-mode="dark"] .input[type="time"]{color-scheme:dark}
+body[data-mode="light"] input[type="date"],
+body[data-mode="light"] input[type="time"],
+body[data-mode="light"] .input[type="date"],
+body[data-mode="light"] .input[type="time"]{color-scheme:light}
+
+/* Light mode semantic overrides (applied via data-mode; applyTheme also sets some vars) */
+body[data-mode="light"]{
+  --control-bg: rgba(255,255,255,.92);
+  --control-border: rgba(15,23,42,.12);
+  --control-text: var(--text-0);
+  --overlay-scrim: rgba(15,23,42,.40);
+  --btn-glass-top: rgba(15,23,42,.035);
+  --btn-glass-bot: rgba(15,23,42,.02);
+  --border-1: rgba(15,23,42,.18);
+}
+
+/* Theme audit (Theme Lab) */
+.theme-audit{margin-top:14px;border:1px solid var(--border-0);border-radius:16px;padding:12px;background:rgba(255,255,255,.03)}
+.theme-audit .ta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:900px){.theme-audit .ta-grid{grid-template-columns:1fr}}
+.theme-audit .ta-row{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--border-0);border-radius:14px;padding:10px;background:rgba(255,255,255,.02)}
+.theme-audit .ta-k{font-weight:900}
+.theme-audit .ta-v{font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.theme-audit .ta-badge{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:900;border:1px solid var(--border-0)}
+.theme-audit .ta-badge.pass{background:rgba(54,211,153,.10);border-color:rgba(54,211,153,.26)}
+.theme-audit .ta-badge.fail{background:rgba(255,91,110,.10);border-color:rgba(255,91,110,.30)}
+

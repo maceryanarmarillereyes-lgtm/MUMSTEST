@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login | MUMS (Build 20260120-aurora-fix29)</title>
+  <!-- Aurora-style typography (used by the Aurora theme preset). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/styles.css?v=20260120-aurora-fix30" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="card pad">
+        <div class="brand brand-login" aria-label="MUMS">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-text">
+            <div class="brand-name">MUMS</div>
+            <div class="brand-sub">MEYS User Management System</div>
+          <div class="brand-build">Build: 20260120-aurora-fix29</div>
+          </div>
+        </div>
+        <h1 class="h1" style="margin-top:10px">Login</h1>
+        <p class="h2">Login required. Timezone: <b>Asia/Manila</b></p>
+        <div class="grid2">
+          <div>
+            <label class="small">Username or Email</label>
+            <input class="input" id="login" placeholder="MEYS" autocomplete="username" />
+          </div>
+          <div>
+            <label class="small">Password</label>
+            <input class="input" id="password" type="password" placeholder="MEYS" autocomplete="current-password" />
+          </div>
+        </div>
+
+        <div class="row" style="justify-content:space-between;margin-top:12px;flex-wrap:wrap">
+          <div class="small">Initial Super User: <b>MEYS / MEYS</b></div>
+          <div class="row" style="gap:8px">
+            <button class="btn" id="resetMeys" type="button">Reset MEYS</button>
+            <button class="btn danger" id="factoryReset" type="button">Factory Reset</button>
+            <button class="btn primary" id="loginBtn" type="button">Login</button>
+          </div>
+        </div>
+        <div class="err" id="err" style="display:none"></div>
+
+        <div class="row" style="justify-content:space-between;align-items:center;margin-top:10px;gap:10px;flex-wrap:wrap">
+          <div class="small">Users database (for private/incognito browsers):</div>
+          <div class="row" style="gap:8px">
+            <button class="btn" id="exportUsersLogin" type="button">Export</button>
+            <button class="btn" id="importUsersLogin" type="button">Import</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card pad">
+        <h2 style="margin:0 0 10px">Admin Rules</h2>
+        <ul class="small" style="margin:0;line-height:1.6">
+          <li><b>SUPER_ADMIN (MEYS)</b> controls everything and can create Admins/Team Leads.</li>
+          <li><b>Team Leads</b> can manage users and announcements inside their team.</li>
+          <li><b>Schedules</b> show as icons on user tags in Mailbox.</li>
+          <li><b>Announcements</b> appear at the top bar within their date/time window.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load in order (no modules) so it works via file:// in Edge -->
+  <script src="./js/config.js?v=20260120-aurora-fix30"></script>
+  <script src="./js/auth.js?v=20260120-aurora-fix30"></script>
+  <script src="./js/store.js?v=20260120-aurora-fix30"></script>
+  <script src="./js/ui.js?v=20260120-aurora-fix30"></script>
+
+  <script>
+    // Surface runtime errors on the login page instead of failing silently
+    window.addEventListener('error', (ev)=>{
+      try{
+        const msg = (ev && ev.message) ? ev.message : 'Unknown error';
+        const where = (ev && ev.filename) ? (ev.filename.split('/').pop()+':'+(ev.lineno||0)) : '';
+        const e = document.getElementById('err');
+        if(e){ e.textContent = 'App error: '+msg+(where?(' ('+where+')'):''); e.style.display='block'; }
+      }catch(_){ }
+    });
+
+    // Ensure MEYS exists (and repair if old broken localStorage exists)
+    // If Store.ensureSeed fails for any reason, fall back to a minimal MEYS seed
+    // so the system is always recoverable.
+    try{
+      Store.ensureSeed();
+    }catch(e){
+      try{
+        const AuthHash = (window.Auth && Auth.hash) ? Auth.hash('MEYS') : '';
+        const meys = [{
+          id: 'meys-'+Date.now(),
+          username: 'MEYS',
+          email: 'meys@local',
+          name: 'MEYS',
+          role: (window.Config && Config.ROLES && Config.ROLES.SUPER_ADMIN) ? Config.ROLES.SUPER_ADMIN : 'SUPER_ADMIN',
+          teamId: (window.Config && Config.TEAMS && Config.TEAMS[0]) ? Config.TEAMS[0].id : 'morning',
+          schedule: 'mailbox_manager',
+          status: 'active',
+          passwordHash: AuthHash
+        }];
+        localStorage.setItem('ums_users', JSON.stringify(meys));
+        localStorage.setItem('ums_users_backup', JSON.stringify(meys));
+      }catch(_){ }
+    }
+
+    const $ = (id)=>document.getElementById(id);
+    const showErr = (msg)=>{ const e=$("err"); e.textContent=msg; e.style.display="block"; };
+    const hideErr = ()=>{ const e=$("err"); e.style.display="none"; e.textContent=""; };
+
+    function doLogin(){
+      hideErr();
+      const login = $("login").value.trim();
+      const pass = $("password").value;
+      if(!login || !pass) return showErr("Please enter username/email and password.");
+      const res = Auth.login(login, pass);
+      if(!res.ok) return showErr(res.message);
+      window.location.href = "./index.html#dashboard";
+    }
+
+    $("loginBtn").onclick = doLogin;
+    $("password").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
+
+    $("factoryReset").onclick = ()=>{ Store.factoryReset(); alert("Reset complete. Use MEYS / MEYS"); };
+    $("resetMeys").onclick = ()=>{ Store.ensureSeed(); alert("MEYS repaired. Use MEYS / MEYS"); };
+
+    // Incognito/private windows do not share localStorage with normal windows.
+    // This import/export provides an explicit way to sync users.
+    $("exportUsersLogin").onclick = ()=>{
+      try{ UI.downloadJSON("mums_bundle.json", Store.exportBundle()); }catch(e){ showErr("Export failed: "+(e && e.message ? e.message : e)); }
+    };
+    $("importUsersLogin").onclick = async()=>{
+      try{
+        const data = await UI.pickJSON();
+        const res = Store.importBundle(data);
+        alert("Imported: users "+res.users+", announcements "+res.announcements+", release notes "+res.releaseNotes+". You can now log in.");
+      }catch(e){
+        showErr('Import failed: '+(e && e.message ? e.message : e));
+      }
+    };
+
+  </script>
+</body>
+</html>

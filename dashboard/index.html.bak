@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MUMS | MEYS User Management System (Build 20260120-aurora-fix16)</title>
+  <!-- Aurora-style typography (used by the new Aurora theme preset). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/styles.css?v=20260120-aurora-fix16" />
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="topbrand" aria-label="MUMS">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">MUMS</div>
+          <div class="brand-sub">MEYS User Management System</div>
+          <div class="brand-build">Build: 20260120-aurora-fix16</div>
+        </div>
+      </div>
+
+      <div class="topbar-center">
+        <div class="announce-bar" id="announceBar" style="visibility:hidden" title="Click to read full announcement">
+          <div class="announce-title" id="announceTitle">Announcement</div>
+          <div class="announce-msg" id="announceMsg">—</div>
+          <div class="announce-meta small" id="announceMeta" style="opacity:.9">—</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn ghost iconbtn" id="releaseNotesBtn" type="button" title="Release Notes" aria-label="Release Notes">🧾</button>
+        <button class="btn ghost iconbtn" id="dictionaryBtn" type="button" title="MUMS Dictionary" aria-label="MUMS Dictionary">📖</button>
+        <button class="btn ghost iconbtn" id="settingsBtn" type="button" title="Settings" aria-label="Settings">⚙️</button>
+        <button class="btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </div>
+
+    <aside class="side card pad">
+      <div class="usercard" id="userCard"></div>
+      <div class="small">Time zone: Asia/Manila</div>
+      <nav class="nav" id="nav"></nav>
+
+      <div class="side-logs" id="sideLogs">
+        <div class="side-logs-head">
+          <button class="btn ghost" id="openLogs" type="button">Activity Logs</button>
+          <span class="small muted" id="sideLogsHint"></span>
+        </div>
+        <div class="side-logs-list" id="sideLogsList"></div>
+      </div>
+    </aside>
+
+    <main class="main card pad" id="main"></main>
+
+    <aside class="right card pad" id="rightbar">
+      <div class="rtabs" role="tablist" aria-label="Right sidebar tabs">
+        <button class="rtab active" type="button" data-rtab="summary" role="tab" aria-selected="true">Summary</button>
+        <button class="rtab" type="button" data-rtab="cases" role="tab" aria-selected="false">Cases</button>
+        <button class="rtab" type="button" data-rtab="mylink" role="tab" aria-selected="false">My Link</button>
+      </div>
+
+      <div class="rtab-panels">
+        <section class="rtab-panel active" id="rtab-summary" role="tabpanel">
+          <div class="rsummary-head">
+            <div class="rsummary-title">
+              <div class="section-title" id="summaryMenuTitle">Guide</div>
+              <div class="small muted" id="summaryMenuMeta" style="margin-top:6px">—</div>
+            </div>
+            <div class="rsummary-right"></div>
+          </div>
+
+          <div class="gtools">
+            <label class="gswitch" title="Enable/disable the Guide panel">
+              <input type="checkbox" id="guideEnabledToggle" />
+              <span>Guide</span>
+            </label>
+            <button class="btn ghost small" id="guideOpenFullManual" type="button" title="Open full manual for this page (Guide + Notes + Legends + Manual)">📘 Full manual</button>
+            <div class="gsearch">
+              <span class="gsearch-ico">🔎</span>
+              <input id="guideSearch" type="text" placeholder="Search this guide…" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="gtabs" role="tablist" aria-label="Guide sections">
+            <button class="gtab active" type="button" data-gtab="guide" role="tab" aria-selected="true">Guide</button>
+            <button class="gtab" type="button" data-gtab="notes" role="tab" aria-selected="false">Notes</button>
+            <button class="gtab" type="button" data-gtab="legends" role="tab" aria-selected="false">Legends</button>
+            <button class="gtab" type="button" data-gtab="manual" role="tab" aria-selected="false">Manual</button>
+          </div>
+
+          <div class="gask">
+            <input id="guideAsk" type="text" placeholder="Ask a question about this page…" autocomplete="off" />
+            <button class="btn" id="guideAskBtn" type="button">Ask</button>
+          </div>
+
+          <div class="rsummary-body" id="summaryGuide"></div>
+        </section>
+
+        <section class="rtab-panel" id="rtab-cases" role="tabpanel">
+          <div class="small muted">(Coming soon)</div>
+        </section>
+
+        <section class="rtab-panel" id="rtab-mylink" role="tabpanel">
+          <div class="small muted">(Coming soon)</div>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Bottom quick links bar (10 customizable circles) -->
+  <div class="quicklinks-bar" id="quickLinksBar" aria-label="Quick links" role="navigation">
+    <!-- World clocks (left side) -->
+    <div class="clocks-wrap" id="worldClocks" aria-label="World clocks"></div>
+    <div class="quicklinks-inner" id="quickLinksInner"></div>
+  </div>
+
+  <div class="modal" id="guideImgModal">
+    <div class="panel" style="max-width:860px">
+      <div class="head">
+        <div>
+          <div class="announce-title" id="guideImgTitle">Guide Image</div>
+          <div class="small" id="guideImgCaption">—</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="guideImgModal">✕</button>
+      </div>
+      <div class="body" id="guideImgBody"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="topAnnModal">
+    <div class="panel">
+      <div class="head">
+        <div>
+          <div class="announce-title" id="annModalTitle">Announcement</div>
+          <div class="small">Full description</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="topAnnModal">✕</button>
+      </div>
+      <div class="body" id="annModalBody" style="white-space:pre-wrap"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="settingsModal">
+    <div class="panel">
+      <div class="head">
+        <div>
+          <div class="announce-title">Settings</div>
+          <div class="small">Manage profile and notification sound.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="settingsModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="settings-grid">
+          <div class="settings-card">
+            <div class="settings-card-title">Profile</div>
+            <div class="small muted" style="margin-top:6px">Update your photo and display name.</div>
+            <div style="margin-top:10px">
+              <button class="btn primary" id="openProfileBtn" type="button">Open Profile Settings</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-title">Notification Sound</div>
+            <div class="small muted" style="margin-top:6px">Adjust sound type and volume for pop-up notifications.</div>
+            <div style="margin-top:10px">
+              <button class="btn" id="openSoundBtn" type="button">Open Sound Settings</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-title">Theme</div>
+            <div class="small muted" style="margin-top:6px">Choose a professional color theme for MUMS.</div>
+            <div style="margin-top:10px">
+              <button class="btn" id="openThemeBtn" type="button">Open Theme Settings</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-card-title">Quick Links</div>
+            <div class="small muted" style="margin-top:6px">Set up to 10 favorite links shown on the bottom bar.</div>
+            <div style="margin-top:10px">
+              <button class="btn" id="openLinksBtn" type="button">Manage Quick Links</button>
+            </div>
+          </div>
+        </div>
+
+          <div class="settings-card">
+            <div class="settings-card-title">World Clocks</div>
+            <div class="small muted" style="margin-top:6px">Configure 3 programmable clocks for different regions (label, style, colors, alarm).</div>
+            <div style="margin-top:10px">
+              <button class="btn" id="openClocksBtn" type="button">Configure Clocks</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="themeModal">
+    <div class="panel" style="max-width:920px">
+      <div class="head">
+        <div>
+          <div class="announce-title">Theme</div>
+          <div class="small">Pick a theme. Changes apply instantly and are saved on this device.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="themeModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="theme-grid" id="themeGrid"></div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+        <div class="theme-audit" id="themeAudit" style="display:none">
+          <div class="h3" style="margin:0 0 6px">Theme Lab</div>
+          <div class="small muted">Automatic readability checks (contrast + key UI elements). Use this to validate themes like Aurora (Ecommerce Light).</div>
+          <div id="themeAuditInner" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn" type="button" data-close="themeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="linksModal">
+    <div class="panel" style="max-width:980px">
+      <div class="head">
+        <div>
+          <div class="announce-title">Quick Links</div>
+          <div class="small">Configure the 10 circles on the bottom bar. Click a circle to open its link in a new tab.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="linksModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="links-grid" id="linksGrid"></div>
+        <div class="small muted" style="margin-top:10px">Tip: Use full URLs including https://</div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn" type="button" data-close="linksModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  
+    <div class="modal" id="clocksModal">
+    <div class="panel" style="max-width:980px">
+      <div class="head">
+        <div>
+          <div class="announce-title">World Clocks</div>
+          <div class="small">Set up 3 clocks shown on the bottom bar. Saved on this device.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="clocksModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="clocks-preview">
+          <div class="clocks-preview-head">
+            <div class="small" style="font-weight:900">Preview</div>
+            <div class="small muted">Updates instantly. Drag clocks to reorder (left → right).</div>
+          </div>
+          <div class="clocks-preview-strip" id="clocksPreviewStrip" aria-label="Clocks preview"></div>
+        </div>
+
+        <div class="clocks-grid" id="clocksGrid"></div>
+        <div class="small muted" style="margin-top:10px">Tip: Alarm triggers a beep using your Notification Sound settings.</div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn" id="clocksSave" type="button">Save</button>
+        <button class="btn" type="button" data-close="clocksModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+<div class="modal" id="soundSettingsModal">
+    <div class="panel">
+      <div class="head">
+        <div>
+          <div class="announce-title">Notification Sound</div>
+          <div class="small">Adjust beep sound, volume, and type.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="soundSettingsModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="row" style="justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <label class="small" style="display:flex;gap:10px;align-items:center">
+            <input type="checkbox" id="sndEnabled" />
+            Sound enabled
+          </label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+            <button class="btn" id="sndTest" type="button">Test sound</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <label class="small">Sound type
+            <select class="input" id="sndType">
+              <option value="beep">Beep</option>
+              <option value="chime">Chime</option>
+              <option value="pop">Pop</option>
+            </select>
+          </label>
+          <label class="small">Volume
+            <input class="input" id="sndVol" type="range" min="0" max="100" value="65" />
+          </label>
+        </div>
+        <div class="small muted" style="margin-top:10px">Tip: If you turn sound Off, notifications still pop out—just silent.</div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn" id="sndSave" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="profileModal">
+    <div class="panel" style="max-width:720px">
+      <div class="head">
+        <div>
+          <div class="announce-title">My Profile</div>
+          <div class="small">Update your photo and profile information (local in this browser).</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="profileModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="profile-grid">
+          <div class="profile-photo">
+            <div class="avatar-xl" id="profileAvatar"></div>
+            <label class="btn" style="margin-top:10px;display:inline-block">
+              Upload photo
+              <input id="profilePhotoInput" type="file" accept="image/*" style="display:none" />
+            </label>
+            <button class="btn ghost" id="profileRemovePhoto" type="button" style="margin-top:8px">Remove photo</button>
+            <div class="small muted" style="margin-top:8px">Tip: Use a square photo for best results.</div>
+          </div>
+          <div class="profile-fields">
+            <label class="small">Full Name
+              <input class="input" id="profileName" />
+            </label>
+            <label class="small">Email
+              <input class="input" id="profileEmail" />
+            </label>
+            <label class="small">Role
+              <input class="input" id="profileRole" disabled />
+            </label>
+            <label class="small">Team
+              <input class="input" id="profileTeam" disabled />
+            </label>
+            <label class="small">Profile layout
+              <select class="input" id="profileLayout">
+                <option value="banner">Photo-left Profile (recommended)</option>
+                <option value="card">Classic Card</option>
+                <option value="split">Split header</option>
+                <option value="minimal">Minimal compact</option>
+              </select>
+            </label>
+            <div class="row" style="justify-content:flex-end;gap:10px;margin-top:10px">
+              <button class="btn" type="button" data-close="profileModal">Cancel</button>
+              <button class="btn primary" id="profileSave" type="button">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="releaseNotesModal">
+    <div class="panel" style="max-width:980px">
+      <div class="head">
+        <div>
+          <div class="announce-title">Release Notes</div>
+          <div class="small">All updates are appended per build. Older notes are retained.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="releaseNotesModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="dict-top">
+          <div class="dict-search">
+            <label class="small">Search release notes</label>
+            <input class="input" id="rnSearch" placeholder="Type: aurora, theme, clock, members, settings, bug fix..." />
+          </div>
+          <div class="dict-ask">
+            <label class="small">Filter</label>
+            <select class="input" id="rnFilter">
+              <option value="all">All</option>
+              <option value="feature">Features</option>
+              <option value="fix">Fixes</option>
+              <option value="ui">UI/UX</option>
+              <option value="security">Security</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="small muted" id="rnMeta" style="margin-top:10px">—</div>
+        <div id="rnAdmin" style="display:none">
+          <div class="card pad" style="margin:14px 0">
+            <div class="row" style="justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
+              <div>
+                <div class="h3" style="margin:0 0 6px">Release notes management</div>
+                <div class="small muted">Super User/Admin can add, import/export, and delete notes. Notes persist across upgrades and factory reset.</div>
+              </div>
+              <div class="row" style="gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap">
+                <button class="btn" id="rnExportBtn" type="button" title="Export as JSON">Export</button>
+                <button class="btn danger" id="rnClearBtn" type="button" title="Delete all notes">Delete all</button>
+              </div>
+            </div>
+
+            <div class="h3" style="margin:14px 0 8px">Add a release note</div>
+            <div class="grid2">
+              <label class="small">Build / version
+                <input class="input" id="rnVer" placeholder="e.g. 20260120-aurora-fix16" />
+              </label>
+              <label class="small">Tags (comma-separated)
+                <input class="input" id="rnTags" placeholder="fix, ui, theme" />
+              </label>
+            </div>
+            <label class="small" style="margin-top:10px">Title
+              <input class="input" id="rnTitle" placeholder="Short summary" />
+            </label>
+
+            <div class="rn-editor" style="margin-top:10px">
+              <div class="rn-toolbar" id="rnToolbar" role="toolbar" aria-label="Release note editor toolbar">
+                <button class="btn ghost small" type="button" data-md="# {text}\n" title="Heading">H1</button>
+                <button class="btn ghost small" type="button" data-md="## {text}\n" title="Subheading">H2</button>
+                <button class="btn ghost small" type="button" data-md="**{text}**" title="Bold">Bold</button>
+                <button class="btn ghost small" type="button" data-md="*{text}*" title="Italic">Italic</button>
+                <button class="btn ghost small" type="button" data-md="`{text}`" title="Inline code">Code</button>
+                <button class="btn ghost small" type="button" data-md="- {text}\n" title="Bullet list">• List</button>
+                <button class="btn ghost small" type="button" data-md="1. {text}\n" title="Numbered list">1. List</button>
+                <button class="btn ghost small" type="button" data-md="\n```\n{text}\n```\n" title="Code block">```</button>
+              </div>
+              <div class="rn-editor-grid">
+                <label class="small" style="margin:0">Details (Markdown supported)
+                  <textarea class="input textarea" id="rnBody" rows="7" placeholder="Write details using Markdown.\n\nExample:\n- Fixed Aurora visibility in profile card\n- Rebuilt clock settings UI\n\nTip: Use the toolbar for formatting."></textarea>
+                </label>
+                <div>
+                  <div class="small" style="font-weight:900">Preview</div>
+                  <div class="rn-preview card" id="rnBodyPreview" style="margin-top:8px"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="justify-content:flex-end;gap:10px;margin-top:10px">
+              <button class="btn" id="rnAdd" type="button">Add</button>
+            </div>
+
+            <div class="h3" style="margin:18px 0 8px">Import release notes</div>
+            <div class="small muted">Upload JSON (.json) to merge/replace notes, or upload a text/markdown file to create a single note (first line becomes the title).</div>
+            <div class="row" style="gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:10px">
+              <label class="small" style="flex:1 1 360px">File
+                <input class="input" id="rnImportFile" type="file" accept=".json,.txt,.md" />
+              </label>
+              <label class="small" style="flex:0 0 200px">Mode
+                <select class="input" id="rnImportMode">
+                  <option value="merge">Merge (recommended)</option>
+                  <option value="replace">Replace all</option>
+                </select>
+              </label>
+              <button class="btn" id="rnImportBtn" type="button">Import</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="rnList"></div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn" type="button" data-close="releaseNotesModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="dictionaryModal">
+    <div class="panel" style="max-width:980px">
+      <div class="head">
+        <div>
+          <div class="announce-title">MUMS Dictionary</div>
+          <div class="small">In-app guide that stays aligned with your current MUMS build.</div>
+        </div>
+        <button class="btn ghost" type="button" data-close="dictionaryModal">✕</button>
+      </div>
+      <div class="body">
+        <div class="dict-top">
+          <div class="dict-search">
+            <label class="small">Search features / guide</label>
+            <input class="input" id="dictSearch" placeholder="Type: rest day, auto schedule, leaves, send, acknowledgement..." />
+          </div>
+          <div class="dict-ask">
+            <label class="small">Ask a question</label>
+            <div class="row" style="gap:8px;align-items:center">
+              <input class="input" id="dictQuestion" placeholder="Ask anything about MUMS..." />
+              <button class="btn" id="dictAskBtn" type="button">Save</button>
+            </div>
+            <div class="small muted" id="dictAskHint" style="margin-top:6px">Saved questions appear to you as notes (local only).</div>
+          </div>
+        </div>
+
+        <div class="dict-meta" id="dictMeta"></div>
+        <div class="dict-content" id="dictContent"></div>
+      </div>
+      <div class="foot" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <div class="small muted" id="dictFooter">—</div>
+        <button class="btn" type="button" data-close="dictionaryModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load in order (no modules) so it works via file:// in Edge -->
+  <script src="./js/config.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/auth.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/store.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/ui.js?v=20260120-aurora-fix16"></script>
+
+  <!-- Components -->
+  <script src="./js/components/sidebarLogs.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/components/coverageMeter.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/components/memberRow.js?v=20260120-aurora-fix16"></script>
+
+  <!-- Pages -->
+  <script src="./js/pages/dashboard.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/members.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/master_schedule.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/users.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/announcements.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/mailbox.js?v=20260120-aurora-fix16"></script>
+  <script src="./js/pages/logs.js?v=20260120-aurora-fix16"></script>
+
+  <script src="./js/app.js?v=20260120-aurora-fix16"></script>
+  <script>
+    // Boot the app after all scripts load
+    try{ App && App.boot && App.boot(); }catch(e){ console.error(e); }
+  </script>
+
+
+</body>
+</html>
+
