@@ -8,7 +8,7 @@
 // - SUPABASE_ANON_KEY: Supabase Dashboard → Project Settings → API → Publishable key
 // - SUPABASE_FUNCTIONS_BASE: typically `${SUPABASE_URL}/functions/v1`
 window.__MEYS_ENV = {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
-  SUPABASE_FUNCTIONS_BASE: "",
+  SUPABASE_URL: "https://vlevsahbeqnwnmcbqoxm.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_1hdTnbJ2cKLhBvAOWLgjFw__XB02M2A",
+  SUPABASE_FUNCTIONS_BASE: "https://vlevsahbeqnwnmcbqoxm.supabase.co/functions/v1",
 };
