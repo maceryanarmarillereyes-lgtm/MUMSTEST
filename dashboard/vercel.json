@@ -1,5 +1,6 @@
 {
-  "redirects": [
-    { "source": "/", "destination": "/login.html", "permanent": false }
+  "routes": [
+    { "src": "^/$", "status": 302, "headers": { "Location": "/login.html" } },
+    { "handle": "filesystem" }
   ]
 }
