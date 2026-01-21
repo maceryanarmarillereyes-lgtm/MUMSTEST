@@ -97,6 +97,12 @@
       return u;
     },
 
+    // Backwards-compat: some code calls Auth.requireUser().
+    // Keep behavior identical to requireLogin().
+    async requireUser() {
+      return this.requireLogin();
+    },
+
     // Login form
     async login(identifier, password) {
       // Supabase mode
