@@ -29,7 +29,7 @@ function canCreateRole(actor, role){
 
 (window.Pages=window.Pages||{}, window.Pages.users = function(root){
   const actor = Auth.getUser();
-  const users = Store.getUsers();
+  let users = Store.getUsers();
 
   root.innerHTML = `
     <div class="row" style="justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
@@ -240,7 +240,7 @@ function canCreateRole(actor, role){
       UI.el('#btnSaveUser').disabled=false;
     }
 
-    UI.el('#btnSaveUser').onclick = ()=>{
+    UI.el('#btnSaveUser').onclick = async ()=>{
       const name = UI.el('#u_name').value.trim();
       const username = UI.el('#u_username').value.trim();
       const email = UI.el('#u_email').value.trim();
@@ -282,6 +282,28 @@ function canCreateRole(actor, role){
         });
       } else {
         if(!password) return err('Password is required for new users.');
+
+        // If Supabase is configured, create the user in Supabase Auth via Edge Function
+        // so the account works on any device/browser.
+        if (window.SB && SB.isEnabled && SB.isEnabled()) {
+          try {
+            await SB.adminCreateUser({
+              email,
+              password,
+              user_metadata: { full_name: name, username },
+              profile: { username, full_name: name, role, team_id: teamId, status: 'active' }
+            });
+            await SB.syncUsersToLocalStore(Store);
+          } catch (e) {
+            const msg = (e && (e.message || e.error_description)) ? (e.message || e.error_description) : String(e);
+            return err(`Failed to create user in Supabase: `);
+          }
+
+          UI.closeModal('userModal');
+          window.location.reload();
+          return;
+        }
+
         const newUser = {
           id: crypto.randomUUID(),
           name, username, email,
